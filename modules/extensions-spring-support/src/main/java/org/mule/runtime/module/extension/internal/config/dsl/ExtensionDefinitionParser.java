@@ -108,6 +108,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.joda.time.DateTime;
@@ -513,7 +514,8 @@ public abstract class ExtensionDefinitionParser {
 
     final Class<Object> expectedClass = getType(expectedType);
 
-    if (isExpressionFunction(modelProperties) && value != null) {
+    // TODO MULE-11292 Provide a proper fix for this
+    if ((isExpressionFunction(modelProperties) || expectedClass.isAssignableFrom(Function.class)) && value != null) {
       resolver = new ExpressionFunctionValueResolver<>((String) value, expectedType, muleContext);
     } else if (isParameterResolver(modelProperties) && value != null) {
       resolver = new ExpressionBasedParameterResolverValueResolver<>((String) value, expectedType, muleContext);
