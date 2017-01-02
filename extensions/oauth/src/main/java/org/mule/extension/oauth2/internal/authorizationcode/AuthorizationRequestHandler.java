@@ -28,6 +28,7 @@ import org.mule.runtime.core.api.context.MuleContextAware;
 import org.mule.runtime.core.api.message.InternalMessage;
 import org.mule.runtime.core.api.processor.Processor;
 import org.mule.runtime.extension.api.annotation.Alias;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.module.http.internal.listener.matcher.DefaultMethodRequestMatcher;
@@ -40,7 +41,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +67,9 @@ public class AuthorizationRequestHandler implements MuleContextAware, Startable,
    * to the redirectUrl.
    */
   @Parameter
-  @Optional(defaultValue = "#[null]")
-  private Function<Event, String> state;
+  @Optional
+  @Expression(LITERAL)
+  private String state;
 
   /**
    * Identifier under which the oauth authentication attributes are stored (accessToken, refreshToken, etc).
@@ -77,8 +78,9 @@ public class AuthorizationRequestHandler implements MuleContextAware, Startable,
    * authentication server.
    */
   @Parameter
-  @Optional(defaultValue = "#[null]")
-  private Function<Event, String> localAuthorizationUrlResourceOwnerId;
+  @Optional
+  @Expression(LITERAL)
+  private String localAuthorizationUrlResourceOwnerId;
 
   /**
    * If this attribute is provided mule will automatically create and endpoint in the host server that the user can hit to
@@ -127,9 +129,10 @@ public class AuthorizationRequestHandler implements MuleContextAware, Startable,
 
       final String onCompleteRedirectToValue =
           ((HttpRequestAttributes) muleEvent.getMessage().getAttributes()).getQueryParams().get("onCompleteRedirectTo");
-      final String resourceOwnerId = localAuthorizationUrlResourceOwnerId.apply(muleEvent);
+      final String resourceOwnerId = resolveExpression(localAuthorizationUrlResourceOwnerId, muleEvent);
       muleEvent = builder.addVariable(OAUTH_STATE_ID_FLOW_VAR_NAME, resourceOwnerId).build();
-      final StateEncoder stateEncoder = new StateEncoder(state.apply(muleEvent));
+
+      final StateEncoder stateEncoder = new StateEncoder(resolveExpression(state, muleEvent));
       if (resourceOwnerId != null) {
         stateEncoder.encodeResourceOwnerIdInState(resourceOwnerId);
       }
@@ -147,6 +150,16 @@ public class AuthorizationRequestHandler implements MuleContextAware, Startable,
           .build()).build();
     };
     return asList(listenerMessageProcessor);
+  }
+
+  private String resolveExpression(String expr, Event event) {
+    if (expr == null) {
+      return null;
+    } else if (!muleContext.getExpressionManager().isExpression(expr)) {
+      return expr;
+    } else {
+      return (String) muleContext.getExpressionManager().evaluate(expr, event).getValue();
+    }
   }
 
   @Override

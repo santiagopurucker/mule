@@ -34,8 +34,6 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.service.http.api.domain.message.request.HttpRequestBuilder;
 
-import java.util.function.Function;
-
 /**
  * Authorization element for client credentials oauth grant type
  */
@@ -58,7 +56,7 @@ public class ClientCredentialsGrantType extends AbstractGrantType implements Ini
    * process the request to retrieve an access token from the oauth authentication server.
    */
   @Parameter
-  @ParameterGroup("Token Request")
+  @ParameterGroup(name = "Token Request")
   private ClientCredentialsTokenRequestHandler tokenRequestHandler;
 
   /**
