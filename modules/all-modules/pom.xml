@@ -17,9 +17,15 @@
     <dependencies>
         <!-- TODO(gfernandes) MULE-10509 migrate http to depend on sockets extension -->
         <dependency>
+            <!-- Needed dependency because of the following modules cxf,
+                extensions-xml-support,
+                oauth,
+                spring-extras,
+                spring-security -->
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-sockets</artifactId>
             <version>${project.version}</version>
+            <classifier>mule-plugin</classifier>
         </dependency>
         <dependency>
             <groupId>org.mule.modules</groupId>

@@ -14,6 +14,12 @@ import static org.reflections.util.ClasspathHelper.forClassLoader;
 import org.mule.runtime.api.meta.model.ExtensionModel;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.dsl.resolver.DslResolvingContext;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.vfs.Vfs;
+import org.reflections.vfs.ZipDir;
 
 import java.net.URL;
 import java.util.Collection;
@@ -21,11 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ConfigurationBuilder;
+import java.util.jar.JarFile;
 
 /**
  * Implementation of {@link DslResolvingContext} that scans the Classpath looking for the {@link Class} associated to the provided
@@ -66,6 +68,19 @@ class ClasspathBasedDslContext implements DslResolvingContext {
 
   private Set<Class<?>> getExtensionTypes(Collection<URL> urls) {
     try {
+
+      Vfs.addDefaultURLTypes(new Vfs.UrlType() {
+
+        public boolean matches(URL url) {
+          return url.getProtocol().equals("file") && url.toExternalForm().contains(".zip");
+        }
+
+        public Vfs.Dir createDir(final URL url) throws Exception {
+          return new ZipDir(new JarFile(Vfs.getFile(url)));
+        }
+      });
+
+
       return new Reflections(new ConfigurationBuilder()
           .setUrls(urls)
           .setScanners(new SubTypesScanner(), new TypeAnnotationsScanner()))
