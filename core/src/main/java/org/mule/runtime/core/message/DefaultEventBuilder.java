@@ -8,14 +8,14 @@ package org.mule.runtime.core.message;
 
 
 import static java.util.Optional.ofNullable;
-import static org.mule.runtime.core.MessageExchangePattern.REQUEST_RESPONSE;
+import static org.mule.runtime.core.api.MessageExchangePattern.REQUEST_RESPONSE;
 import static org.mule.runtime.core.util.SystemUtils.getDefaultEncoding;
 
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.TypedValue;
-import org.mule.runtime.core.MessageExchangePattern;
+import org.mule.runtime.core.api.MessageExchangePattern;
 import org.mule.runtime.core.api.DefaultMuleException;
 import org.mule.runtime.core.api.Event;
 import org.mule.runtime.core.api.Event.Builder;
@@ -34,10 +34,8 @@ import org.mule.runtime.core.config.i18n.CoreMessages;
 import org.mule.runtime.core.connector.DefaultReplyToHandler;
 import org.mule.runtime.core.context.notification.DefaultFlowCallStack;
 import org.mule.runtime.core.metadata.DefaultTypedValue;
-import org.mule.runtime.core.processor.strategy.LegacyNonBlockingProcessingStrategyFactory;
 import org.mule.runtime.core.processor.strategy.LegacyNonBlockingProcessingStrategyFactory.LegacyNonBlockingProcessingStrategy;
 import org.mule.runtime.core.session.DefaultMuleSession;
-import org.mule.runtime.core.transaction.TransactionCoordination;
 import org.mule.runtime.core.util.CopyOnWriteCaseInsensitiveMap;
 import org.mule.runtime.core.util.store.DeserializationPostInitialisable;
 

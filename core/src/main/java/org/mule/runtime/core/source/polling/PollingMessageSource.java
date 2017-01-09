@@ -9,7 +9,7 @@ package org.mule.runtime.core.source.polling;
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.mule.runtime.core.DefaultEventContext.create;
-import static org.mule.runtime.core.MessageExchangePattern.ONE_WAY;
+import static org.mule.runtime.core.api.MessageExchangePattern.ONE_WAY;
 import static org.mule.runtime.core.api.Event.setCurrentEvent;
 import static org.mule.runtime.core.config.i18n.CoreMessages.failedToScheduleWork;
 import static org.mule.runtime.core.config.i18n.CoreMessages.pollSourceReturnedNull;

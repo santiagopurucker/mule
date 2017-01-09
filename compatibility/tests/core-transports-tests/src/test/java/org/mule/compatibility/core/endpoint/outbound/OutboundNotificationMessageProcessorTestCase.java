@@ -12,19 +12,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mule.compatibility.core.context.notification.EndpointMessageNotification.MESSAGE_DISPATCH_END;
 import static org.mule.compatibility.core.context.notification.EndpointMessageNotification.MESSAGE_SEND_END;
-import static org.mule.runtime.core.MessageExchangePattern.REQUEST_RESPONSE;
-import static org.mule.tck.MuleTestUtils.getTestFlow;
+import static org.mule.runtime.core.api.MessageExchangePattern.REQUEST_RESPONSE;
 
 import org.mule.compatibility.core.api.endpoint.OutboundEndpoint;
 import org.mule.compatibility.core.processor.AbstractMessageProcessorTestCase;
-import org.mule.runtime.core.MessageExchangePattern;
+import org.mule.runtime.core.api.MessageExchangePattern;
 import org.mule.runtime.core.api.Event;
 import org.mule.runtime.core.api.message.InternalMessage;
 import org.mule.runtime.core.api.processor.Processor;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class OutboundNotificationMessageProcessorTestCase extends AbstractMessageProcessorTestCase {

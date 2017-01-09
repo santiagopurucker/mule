@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotSame;
 
 import org.mule.compatibility.core.api.endpoint.InboundEndpoint;
 import org.mule.compatibility.core.api.endpoint.OutboundEndpoint;
-import org.mule.runtime.core.MessageExchangePattern;
+import org.mule.runtime.core.api.MessageExchangePattern;
 import org.mule.runtime.api.exception.MuleException;
 import org.mule.tck.junit4.AbstractMuleContextEndpointTestCase;
 

@@ -15,7 +15,7 @@ import org.mule.compatibility.core.api.endpoint.OutboundEndpoint;
 import org.mule.compatibility.core.api.transport.MessageDispatcher;
 import org.mule.compatibility.core.config.ImmutableThreadingProfile;
 import org.mule.runtime.api.exception.MuleException;
-import org.mule.runtime.core.MessageExchangePattern;
+import org.mule.runtime.core.api.MessageExchangePattern;
 import org.mule.runtime.core.api.Event;
 import org.mule.runtime.core.construct.Flow;
 import org.mule.tck.junit4.AbstractMuleContextEndpointTestCase;
